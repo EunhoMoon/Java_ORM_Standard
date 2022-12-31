@@ -13,26 +13,18 @@ import java.util.Date;
 public class Member {
 
     @Id
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
     @Column(unique = true, length = 10)
     private String name;
+    private int age;
+//    @Column(name = "TEAM_ID")
+//    private Long teamId;
 
-    private Integer age;
-
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateDate;
-
-    @Lob
-    private String description;
-
-    public Member() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Long getId() {
         return id;
@@ -50,43 +42,19 @@ public class Member {
         this.name = name;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public RoleType getRoleType() {
-        return roleType;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setRoleType(RoleType roleType) {
-        this.roleType = roleType;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
