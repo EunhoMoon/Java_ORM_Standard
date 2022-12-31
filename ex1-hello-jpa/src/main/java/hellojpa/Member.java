@@ -1,7 +1,6 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * 요구사항 추가
@@ -54,7 +53,8 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void changeTeam(Team team) {
         this.team = team;
+        team.getMembers().add(this);    // 양방향 객체 세팅, 연관관계 편의 메서드
     }
 }
