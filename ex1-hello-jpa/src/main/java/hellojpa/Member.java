@@ -1,6 +1,7 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * 요구사항 추가
@@ -9,10 +10,9 @@ import javax.persistence.*;
  * - 회원을 설명할 수 있는 필드가 있어야 한다. 해당 필드는 길이 제한 X
  */
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
     @Column(unique = true, length = 10)
@@ -20,11 +20,9 @@ public class Member {
     private int age;
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
-
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
-
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
