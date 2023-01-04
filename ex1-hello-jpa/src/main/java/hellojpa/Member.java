@@ -12,15 +12,16 @@ import java.time.LocalDateTime;
 @Entity
 public class Member extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
     @Column(unique = true, length = 10)
     private String name;
     private int age;
-//    @Column(name = "TEAM_ID")
+    //    @Column(name = "TEAM_ID")
 //    private Long teamId;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
     @OneToOne
@@ -58,5 +59,17 @@ public class Member extends BaseEntity {
     public void changeTeam(Team team) {
         this.team = team;
         team.getMembers().add(this);    // 양방향 객체 세팅, 연관관계 편의 메서드
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Locker getLocker() {
+        return locker;
+    }
+
+    public void setLocker(Locker locker) {
+        this.locker = locker;
     }
 }
