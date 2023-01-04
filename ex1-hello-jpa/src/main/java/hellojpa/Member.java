@@ -72,4 +72,15 @@ public class Member extends BaseEntity {
     public void setLocker(Locker locker) {
         this.locker = locker;
     }
+
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", team=" + team +
+                '}';
+    }
 }
