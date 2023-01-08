@@ -1,7 +1,10 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 요구사항 추가
@@ -18,15 +21,18 @@ public class Member extends BaseEntity {
     private Long id;
     @Column(unique = true, length = 10)
     private String name;
-    private int age;
-    //    @Column(name = "TEAM_ID")
-//    private Long teamId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+
+    @Embedded
+    private Address homeAddress;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -44,43 +50,27 @@ public class Member extends BaseEntity {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
+    public Address getHomeAddress() {
+        return homeAddress;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
     }
 
-    public Team getTeam() {
-        return team;
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
     }
 
-    public void changeTeam(Team team) {
-        this.team = team;
-        team.getMembers().add(this);    // 양방향 객체 세팅, 연관관계 편의 메서드
+    public void setFavoriteFoods(Set<String> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public List<Address> getAddressHistory() {
+        return addressHistory;
     }
 
-    public Locker getLocker() {
-        return locker;
-    }
-
-    public void setLocker(Locker locker) {
-        this.locker = locker;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", team=" + team +
-                '}';
+    public void setAddressHistory(List<Address> addressHistory) {
+        this.addressHistory = addressHistory;
     }
 }
