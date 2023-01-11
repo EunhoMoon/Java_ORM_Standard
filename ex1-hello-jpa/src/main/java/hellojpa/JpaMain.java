@@ -3,6 +3,9 @@ package hellojpa;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class JpaMain {
@@ -14,33 +17,18 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Member member = new Member();
+//            List<Member> memberList = em.createQuery("SELECT m FROM Member m WHERE m.name LIKE '%kim%'", Member.class)
+//                    .getResultList();
 
-            member.setName("memberA");
-            member.setHomeAddress(new Address("city1", "street", "12345"));
-
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("피자");
-            member.getFavoriteFoods().add("삽겹살");
-
-            member.getAddressHistory().add(new AddressEntity("old1", "street", "12345"));
-            member.getAddressHistory().add(new AddressEntity("old2", "street", "12345"));
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-//            List<Address> addressHistory = findMember.getAddressHistory();
-//            Address oldAddr = findMember.getHomeAddress();
-//            findMember.setHomeAddress(new Address("new city", "street", "12345"));
-//            addressHistory.add(oldAddr);
-//            addressHistory.remove(new Address("old1", "street", "12345"));
-//            addressHistory.add(new Address("old city", "street", "12345"));
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member> query = cb.createQuery(Member.class);
 //
-//            findMember.getFavoriteFoods().remove("치킨");
-//            findMember.getFavoriteFoods().add("비빔밥");
+//            Root<Member> m = query.from(Member.class);
+//            CriteriaQuery<Member> cg = query.select(m).where(cb.equal(m.get("name"), "kim"));
+//            List<Member> resultList = em.createQuery(cg).getResultList();
+
+//            Query nativeQuery = em.createNativeQuery("SELECT * FROM MEMBER WHERE name LIKE '%kim%'");
+//            List resultList = nativeQuery.getResultList();
 
             tx.commit();
         } catch (Exception e) {
