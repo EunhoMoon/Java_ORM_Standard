@@ -2,19 +2,20 @@ package jpabook.jpashop.domain;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 public class Delivery extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
     private String name;
-    private String city;
-    private String street;
-    private String zipcode;
-    private DeliveryStaus staus;
+
+    @Embedded
+    private Address address;
+    private DeliveryStatus status;
+
     @OneToOne(mappedBy = "delivery", fetch = LAZY)
     private Order order;
 
@@ -34,36 +35,20 @@ public class Delivery extends BaseEntity {
         this.name = name;
     }
 
-    public String getCity() {
-        return city;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public String getStreet() {
-        return street;
+    public DeliveryStatus getStatus() {
+        return status;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public DeliveryStaus getStaus() {
-        return staus;
-    }
-
-    public void setStaus(DeliveryStaus staus) {
-        this.staus = staus;
+    public void setStatus(DeliveryStatus status) {
+        this.status = status;
     }
 
     public Order getOrder() {
@@ -73,4 +58,5 @@ public class Delivery extends BaseEntity {
     public void setOrder(Order order) {
         this.order = order;
     }
+
 }
