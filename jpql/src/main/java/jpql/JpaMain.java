@@ -1,6 +1,9 @@
 package jpql;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
@@ -12,66 +15,43 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
 
-            Member member = new Member();
-            member.setName("memberA");
-            member.setAge(20);
-            member.setType(MemberType.ADMIN);
+            Team teamB = new Team();
+            teamB.setName("teamA");
+            em.persist(teamB);
 
-            member.changeTeam(team);
-            em.persist(member);
+            Member memberA = new Member();
+            memberA.setName("memberA");
+            memberA.setAge(20);
+            memberA.setType(MemberType.USER);
+            memberA.changeTeam(teamA);
+            em.persist(memberA);
 
-//            for (int i = 1; i <= 100; i++) {
-//                Member member = new Member();
-//                member.setName("member" + i);
-//                member.setAge(i);
-//
-//                if (i % 2 == 0) {
-//                    Team team = new Team();
-//                    team.setName("team" + i);
-//                    em.persist(team);
-//                    member.changeTeam(team);
-//                }
-//                em.persist(member);
-//            }
+            Member memberB = new Member();
+            memberB.setName("memberB");
+            memberB.setAge(25);
+            memberB.setType(MemberType.ADMIN);
+            memberB.changeTeam(teamA);
+            em.persist(memberB);
 
-//            List<Member> resultList = em.createQuery("select m from Member m  where m.name = :username", Member.class)
-//                    .setParameter("username", "memberA")
-//                    .getResultList();
-//            List<MemberDTO> resultList1 = em.createQuery("select new  jpql.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
-//                    .getResultList();
-//
-//            for (MemberDTO memberDTO : resultList1) {
-//                System.out.println("memberDTO = name : " + memberDTO.getName() +  " / age : " + memberDTO.getAge());
-//            }
-            em.flush();
+            Member memberC = new Member();
+            memberC.setName("memberC");
+            memberC.setAge(30);
+            memberC.setType(MemberType.USER);
+            memberC.changeTeam(teamB);
+            em.persist(memberC);
+
+            em.createQuery("update Member m set m.age = 40")
+                    .executeUpdate();
+
             em.clear();
 
-//            List<Member> resultList = em.createQuery("SELECT m FROM Member m LEFT JOIN m.team t ON t.name='team90' ORDER BY m.age DESC", Member.class)
-//                    .setFirstResult(10)
-//                    .setMaxResults(10)
-//                    .getResultList();
-//
-//            System.out.println("size = " + resultList.size());
-//
-//            for (Member findMember : resultList) {
-//                System.out.println("findMember = " + findMember);
-//                System.out.println("team = " + findMember.getTeam());
-//            }
-            String query = "select m.name, 'HELLO', TRUE from Member m " +
-                           "where m.type = :userType";
-            List<Object[]> resultList = em.createQuery(query)
-                    .setParameter("userType", MemberType.ADMIN)
-                    .getResultList();
-
-            for (Object[] objects : resultList) {
-                System.out.println("objects = " + objects[0]);
-                System.out.println("objects = " + objects[1]);
-                System.out.println("objects = " + objects[2]);
-            }
+            Member findMember = em.find(Member.class, memberA.getId());
+            int age = findMember.getAge();
+            System.out.println("age = " + age);
 
             tx.commit();
         } catch (Exception e) {
